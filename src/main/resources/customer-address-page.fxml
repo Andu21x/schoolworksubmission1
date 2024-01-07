@@ -14,7 +14,7 @@
       <Button fx:id="addressPageButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleAddressPageButtonAction" text="Address Page" />
       <Button fx:id="customerAddressPageButton" layoutX="20.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleCustomerAddressPageButtonAction" text="Customer Address Page" />
       <TextArea fx:id="customerAddressInfoTextArea" layoutX="182.0" layoutY="253.0" prefHeight="348.0" prefWidth="754.0" />
-      <Button fx:id="showCustomerAddressButton" layoutX="182.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleShowCustomerAddressListButtonAction" text="Show Customer Adresses and their links" />
+      <Button fx:id="showCustomerAddressButton" layoutX="445.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleShowCustomerAddressListButtonAction" text="Show Customer Adresses and their links" />
       <Label fx:id="addressIDLabel" layoutX="429.0" layoutY="54.0" text="Address ID" />
       <TextField fx:id="addressIDTextField" layoutX="384.0" layoutY="73.0" />
       <Label fx:id="customerIDLabel" layoutX="626.0" layoutY="52.0" text="Customer ID" />

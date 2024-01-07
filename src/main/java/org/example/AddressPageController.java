@@ -13,6 +13,9 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -155,10 +158,31 @@ public class AddressPageController {
     }
 
     private void showAddress(Address address) {
-        addressInfoTextArea.appendText("Street Address: " + address.getStreetAddress() +
+        addressInfoTextArea.appendText("Address ID: " + getAddressId(address) +
+                "\nStreet Address: " + address.getStreetAddress() +
                 "\nCity: " + address.getCity() +
                 "\nState: " + address.getState() +
                 "\nPostcode: " + address.getPostcode() + "\n\n");
+    }
+
+    private int getAddressId(Address address) {
+        String sql = "SELECT address_ID FROM Address WHERE street_address = ? AND city = ? AND state = ? AND postcode = ?";
+        try (PreparedStatement statement = databaseConnection.getConnection().prepareStatement(sql)) {
+            statement.setString(1, address.getStreetAddress());
+            statement.setString(2, address.getCity());
+            statement.setString(3, address.getState());
+            statement.setString(4, address.getPostcode());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("address_ID");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return -1; // Return a default value or handle the case when the address_ID is not found
     }
 
     @FXML
