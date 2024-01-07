@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.lang.Class.*;
-
 public class DatabaseConnection {
 
     private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
