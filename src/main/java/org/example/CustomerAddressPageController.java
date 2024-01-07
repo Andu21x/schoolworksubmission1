@@ -139,9 +139,9 @@ public class CustomerAddressPageController {
     }
 
     private void showCustomerAddress(CustomerAddress customerAddress) {
-        customerAddressInfoTextArea.appendText("Customer Address ID: " + customerAddress.getCustomerAddressId() +
-                "\nFK Customer Address: " + customerAddress.getFkCustomerAddress() +
-                "\nFK Address Address: " + customerAddress.getFkAddressAddress() + "\n\n");
+        customerAddressInfoTextArea.appendText("Customer Address Link ID: " + customerAddress.getCustomerAddressId() +
+                "\nCustomer ID: " + customerAddress.getFkCustomerAddress() +
+                "\nAddress ID: " + customerAddress.getFkAddressAddress() + "\n\n");
     }
 
     @FXML
