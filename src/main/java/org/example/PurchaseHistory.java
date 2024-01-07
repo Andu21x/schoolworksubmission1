@@ -7,11 +7,15 @@ public class PurchaseHistory {
     private String productName;
     private double purchaseAmount;
 
+    private int customerId;
+
+
     // Constructors
-    public PurchaseHistory(Date purchaseDate, String productName, double purchaseAmount) {
+    public PurchaseHistory(Date purchaseDate, String productName, double purchaseAmount, int customerId) {
         this.purchaseDate = purchaseDate;
         this.productName = productName;
         this.purchaseAmount = purchaseAmount;
+        this.customerId = customerId;
     }
 
     // Getters and Setters
@@ -44,5 +48,13 @@ public class PurchaseHistory {
     public String toString() {
         return String.format("Purchase Date: %s\nProduct Name: %s\nPurchase Amount: %.2f\n",
                 purchaseDate, productName, purchaseAmount);
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 }

@@ -19,8 +19,18 @@ import java.util.List;
 public class PurchasePageController {
 
     private final DatabaseConnection databaseConnection = new DatabaseConnection();
+
     @FXML
-    public Button customerPageButton;
+    public Button addressPageButton;
+
+    @FXML
+    private TextField CustomerIDTextField;
+
+    @FXML
+    private Button customerPageButton;
+
+    @FXML
+    private Label CustomerIDLabel;
 
     @FXML
     private Pane pane;
@@ -64,6 +74,7 @@ public class PurchasePageController {
 
     @FXML
     private void handleExitButtonAction() {
+        databaseConnection.closeConnection();
         Platform.exit(); // Close the JavaFX application
     }
 
@@ -96,6 +107,20 @@ public class PurchasePageController {
     }
 
     @FXML
+    private void handleAddressPageButtonAction() {
+        try {
+            // Load the new FXML file for the address page
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("address-page.fxml"));
+            Parent addressPage = loader.load();
+
+            // Set the loaded FXML as the content of the pane
+            pane.getChildren().setAll(addressPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleCreatePurchaseHistoryButtonAction() {
         try {
             // Retrieve values from text fields
@@ -103,14 +128,17 @@ public class PurchasePageController {
             String productName = ProductNameTextField.getText();
             double purchaseAmount = Double.parseDouble(PurchaseAmountTextField.getText());
 
+            // Retrieve customer ID from the TextField
+            int customerId = Integer.parseInt(CustomerIDTextField.getText());
+
             // Parse the date string to java.sql.Date
             Date purchaseDate = parseDate(dateString);
 
             // Create PurchaseHistory object
-            PurchaseHistory purchaseHistory = new PurchaseHistory(purchaseDate, productName, purchaseAmount);
+            PurchaseHistory purchaseHistory = new PurchaseHistory(purchaseDate, productName, purchaseAmount, customerId);
 
             // Save the PurchaseHistory to the database
-            databaseConnection.savePurchaseHistory(purchaseHistory);
+            databaseConnection.savePurchaseHistory(purchaseHistory, customerId);
 
             // Display success message or update UI as needed
             purchaseInfoTextArea.setText("PurchaseHistory created successfully!");
@@ -146,6 +174,7 @@ public class PurchasePageController {
     private void showPurchaseHistory(PurchaseHistory purchaseHistory) {
         purchaseInfoTextArea.appendText("Date: " + purchaseHistory.getPurchaseDate() +
                 "\nProduct Name: " + purchaseHistory.getProductName() +
-                "\nPurchase Amount: " + purchaseHistory.getPurchaseAmount() + "\n\n");
+                "\nPurchase Amount: " + purchaseHistory.getPurchaseAmount() +
+                "\nCustomer ID: " + purchaseHistory.getCustomerId() + "\n\n");
     }
 }

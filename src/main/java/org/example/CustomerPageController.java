@@ -17,6 +17,11 @@ import java.util.List;
 
 public class CustomerPageController {
 
+    private final DatabaseConnection databaseConnection = new DatabaseConnection();
+
+    @FXML
+    public Button addressPageButton;
+
     @FXML
     private TextArea customerInfoTextArea;
 
@@ -70,6 +75,7 @@ public class CustomerPageController {
 
     @FXML
     private void handleExitButtonAction() {
+        databaseConnection.closeConnection();
         Platform.exit(); // Close the JavaFX application
     }
 
@@ -96,6 +102,20 @@ public class CustomerPageController {
 
             // Set the loaded FXML as the content of the pane
             pane.getChildren().setAll(customerPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleAddressPageButtonAction() {
+        try {
+            // Load the new FXML file for the address page
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("address-page.fxml"));
+            Parent addressPage = loader.load();
+
+            // Set the loaded FXML as the content of the pane
+            pane.getChildren().setAll(addressPage);
         } catch (IOException e) {
             e.printStackTrace();
         }

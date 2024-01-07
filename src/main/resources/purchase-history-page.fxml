@@ -11,7 +11,8 @@
       <Button fx:id="exitButton" layoutX="1245.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="Exit" />
       <Button fx:id="customerPageButton" layoutX="20.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleCustomerPageButtonAction" text="Customer" />
       <Button fx:id="purchasePageButton" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" onAction="#handlePurchasePageButtonAction" text="Purchase History" />
-      <TextArea fx:id="purchaseInfoTextArea" layoutX="182.0" layoutY="253.0" prefHeight="336.0" prefWidth="675.0" />
+      <Button fx:id="addressPageButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleAddressPageButtonAction" text="Address Page" />
+      <TextArea fx:id="purchaseInfoTextArea" layoutX="182.0" layoutY="253.0" prefHeight="348.0" prefWidth="754.0" />
       <Button fx:id="ShowPurchaseHistoryButton" layoutX="182.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleShowPurchaseHistoryButtonAction" text="Show Purchase History" />
       <Label fx:id="PurchaseDateLabel" layoutX="218.0" layoutY="42.0" text="Purchase Date" />
       <TextField fx:id="PurchaseDateTextField" layoutX="182.0" layoutY="63.0" />
@@ -19,7 +20,9 @@
       <TextField fx:id="ProductNameTextField" layoutX="383.0" layoutY="61.0" />
       <Label fx:id="PurchaseAmountLabel" layoutX="608.0" layoutY="42.0" text="Purchase Amount" />
       <TextField fx:id="PurchaseAmountTextField" layoutX="581.0" layoutY="61.0" />
-      <Button fx:id="CreatePurchaseHistoryButton" layoutX="386.0" layoutY="125.0" mnemonicParsing="false" onAction="#handleCreatePurchaseHistoryButtonAction" text="Create Purchase History" />
+      <Button fx:id="CreatePurchaseHistoryButton" layoutX="487.0" layoutY="125.0" mnemonicParsing="false" onAction="#handleCreatePurchaseHistoryButtonAction" text="Create Purchase History" />
       <Label fx:id="PurchaseFormatLabel" layoutX="190.0" layoutY="92.0" text="(format is YYYY-MM-DD)" />
+      <Label fx:id="CustomerIDLabel" layoutX="824.0" layoutY="42.0" text="Customer ID" />
+      <TextField fx:id="CustomerIDTextField" layoutX="783.0" layoutY="60.0" />
    </children>
 </Pane>
