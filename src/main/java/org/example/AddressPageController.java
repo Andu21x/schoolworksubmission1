@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,9 @@ public class AddressPageController {
     private final DatabaseConnection databaseConnection = new DatabaseConnection();
 
     @FXML
+    private Button customerAddressPageButton;
+
+    @FXML
     private Pane pane;
 
     @FXML
@@ -34,7 +38,6 @@ public class AddressPageController {
 
     @FXML
     private Button purchasePageButton;
-
 
     @FXML
     private Button showAddressListButton;
@@ -157,4 +160,19 @@ public class AddressPageController {
                 "\nState: " + address.getState() +
                 "\nPostcode: " + address.getPostcode() + "\n\n");
     }
+
+    @FXML
+    private void handleCustomerAddressPageButtonAction() {
+        try {
+            // Load the new FXML file for the customer address page
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-address-page.fxml"));
+            Parent customerAddressPage = loader.load();
+
+            // Set the loaded FXML as the content of the pane
+            pane.getChildren().setAll(customerAddressPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

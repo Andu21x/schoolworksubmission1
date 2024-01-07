@@ -192,6 +192,52 @@ public class DatabaseConnection {
         }
         return addressList;
     }
+    public void saveCustomerAddress(CustomerAddress customerAddress) {
+        try {
+            // Assuming 'Customer_Address' is auto-incremented, you don't need to insert a value for it.
+            String sql = "INSERT INTO Customer_Address (customer_ID, address_ID) VALUES (?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, customerAddress.getFkCustomerAddress());
+                statement.setInt(2, customerAddress.getFkAddressAddress());
+                statement.executeUpdate();
+
+                // If 'Customer_Address' is auto-incremented, retrieve the generated key
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int generatedId = generatedKeys.getInt(1);
+                        customerAddress.setCustomerAddressId(generatedId);
+                    } else {
+                        throw new SQLException("Error getting generated key for Customer_Address");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error saving customer address", e);
+        }
+    }
+
+    public List<CustomerAddress> getCustomerAddressList() {
+        List<CustomerAddress> customerAddressList = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM Customer_Address";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int customerAddressId = resultSet.getInt("Customer_Address");
+                        int fkCustomerAddress = resultSet.getInt("customer_ID");
+                        int fkAddressAddress = resultSet.getInt("address_ID");
+
+                        customerAddressList.add(new CustomerAddress(customerAddressId, fkCustomerAddress, fkAddressAddress));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error retrieving all customer addresses", e);
+        }
+
+        return customerAddressList;
+    }
 
     public void closeConnection() {
         try {

@@ -13,7 +13,12 @@ import java.io.IOException;
 
 public class HelloController {
 
-    public Button addressPageButton;
+    @FXML
+    private Button addressPageButton;
+
+    @FXML
+    private Button customerAddressPageButton;
+
     @FXML
     private Pane pane;
 
@@ -68,6 +73,20 @@ public class HelloController {
 
             // Set the loaded FXML as the content of the pane
             pane.getChildren().setAll(addressPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleCustomerAddressPageButtonAction() {
+        try {
+            // Load the new FXML file for the customer address page
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-address-page.fxml"));
+            Parent customerAddressPage = loader.load();
+
+            // Set the loaded FXML as the content of the pane
+            pane.getChildren().setAll(customerAddressPage);
         } catch (IOException e) {
             e.printStackTrace();
         }
