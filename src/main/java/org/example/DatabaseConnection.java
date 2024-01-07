@@ -1,10 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,6 +12,11 @@ public class DatabaseConnection {
 
     private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
     private static Connection connection;
+
+    private static final String DB_URL = "jdbc:mysql://google/quickstart_db?cloudSqlInstance=schoolwork-101010:europe-west2:quickstart-instance";
+    private static final String USER = "quickstart-user";
+    private static final String PASSWORD = "user123$";
+
 
     public DatabaseConnection() {
         try {
@@ -108,6 +109,43 @@ public class DatabaseConnection {
         return customers;
     }
 
+    public void savePurchaseHistory(PurchaseHistory purchaseHistory) {
+        try {
+            String sql = "INSERT INTO PurchaseHistory (purchaseDate, productName, purchaseAmount) VALUES (?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setObject(1, purchaseHistory.getPurchaseDate());
+                statement.setString(2, purchaseHistory.getProductName());
+                statement.setDouble(3, purchaseHistory.getPurchaseAmount());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error saving purchase history", e);
+        }
+    }
+
+
+    public List<PurchaseHistory> getPurchaseHistory() {
+        List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM PurchaseHistory";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Date purchaseDate = resultSet.getObject("purchaseDate", Date.class);
+                        String productName = resultSet.getString("productName");
+                        double purchaseAmount = resultSet.getDouble("purchaseAmount");
+
+                        purchaseHistoryList.add(new PurchaseHistory(purchaseDate, productName, purchaseAmount));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error retrieving all purchase history", e);
+        }
+
+        return purchaseHistoryList;
+    }
 
     public static void main(String[] args) {
         // Example of invoking the initialization method
