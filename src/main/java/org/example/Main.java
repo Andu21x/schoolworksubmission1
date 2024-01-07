@@ -1,6 +1,9 @@
-/**
- * Main class to launch the JavaFX application.
- */
+// Code submission for Cloud Computing
+// Leonard-Andrei Dascalete - 210025374 - Leonard.Dascalete@city.ac.uk
+// Roshaunn Taylor - 210041247 - Roshaunn.Taylor@city.ac.uk
+
+
+
 package org.example;
 
 import javafx.application.Application;
@@ -13,6 +16,9 @@ import org.apache.log4j.BasicConfigurator;
 
 import java.io.IOException;
 
+/**
+ * Main class to launch the JavaFX application.
+ */
 public class Main extends Application {
 
     /**
