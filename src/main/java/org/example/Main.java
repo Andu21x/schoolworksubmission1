@@ -2,6 +2,9 @@
 // Leonard-Andrei Dascalete - 210025374 - Leonard.Dascalete@city.ac.uk
 // Roshaunn Taylor - 210041247 - Roshaunn.Taylor@city.ac.uk
 
+// Parts of this code have used sample code from multiple sources
+// Including: StackOverflow, Google Tutorials, ChatGPT and IntelliJ Ultimate suggestions
+
 
 
 package org.example;
