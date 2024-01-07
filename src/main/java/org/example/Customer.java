@@ -60,4 +60,11 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email; // Change from Email to email
     }
+
+
+    @Override
+    public String toString() {
+        return String.format("Name: %s %s\nDate of Birth: %s\nTelephone: %s\nEmail: %s\n",
+                firstName, lastName, dob, telephone, email);
+    }
 }

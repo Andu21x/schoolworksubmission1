@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,6 +81,31 @@ public class DatabaseConnection {
             logger.log(Level.SEVERE, "Error retrieving customer by ID", e);
         }
         return null;
+    }
+
+    public List<Customer> getAllCustomers() {
+        List<Customer> customers = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM Customer";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String firstName = resultSet.getString("firstName");
+                        String lastName = resultSet.getString("lastName");
+                        String doB = resultSet.getString("doB");
+                        String telephone = resultSet.getString("telephone");
+                        String email = resultSet.getString("email");
+
+                        customers.add(new Customer(firstName, lastName, doB, telephone, email));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error retrieving all customers", e);
+        }
+
+        return customers;
     }
 
 

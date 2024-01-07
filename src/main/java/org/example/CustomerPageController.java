@@ -7,13 +7,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CustomerPageController {
+
+    @FXML
+    private TextArea customerInfoTextArea;
 
     @FXML
     private Pane pane;
@@ -29,6 +34,9 @@ public class CustomerPageController {
 
     @FXML
     private Button CreateCustomerButton;
+
+    @FXML
+    private Button ShowCustomerButton;
 
     @FXML
     private Label FirstNameLabel;
@@ -112,12 +120,27 @@ public class CustomerPageController {
         clearTextFields();
     }
 
+    @FXML
     private void saveCustomerToDatabase(Customer customer) {
         // Add your logic to save the customer to the database (e.g., using JDBC)
         // For demonstration purposes, let's print the customer details
         System.out.println("Customer created: " + customer);
     }
 
+    @FXML
+    private void handleShowCustomerButtonAction() {
+        // Retrieve all customers from the database using DatabaseConnection
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        List<Customer> customers = databaseConnection.getAllCustomers();
+
+        // Display the customers in the TextArea
+        StringBuilder customerInfo = new StringBuilder();
+        for (Customer customer : customers) {
+            customerInfo.append(customer.toString()).append("\n");
+        }
+        customerInfoTextArea.setText(customerInfo.toString());
+    }
+    @FXML
     private void clearTextFields() {
         // Clear the text fields after creating the customer
         FirstNameTextField.clear();
