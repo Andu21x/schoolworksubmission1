@@ -42,10 +42,13 @@ public class DatabaseConnection {
 
     public void saveCustomer(Customer customer) {
         try {
-            String sql = "INSERT INTO customer (firstName, lastName) VALUES (?, ?)";
+            String sql = "INSERT INTO Customer (firstName, lastName, doB, telephone, email) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, customer.getFirstName());
                 statement.setString(2, customer.getLastName());
+                statement.setString(3, customer.getDoB());
+                statement.setString(4, customer.getTelephone());
+                statement.setString(5, customer.getEmail());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -55,12 +58,20 @@ public class DatabaseConnection {
 
     public Customer getCustomerById(int customerId) {
         try {
-            String sql = "SELECT * FROM customer WHERE customer_id = ?";
+            String sql = "SELECT * FROM Customer WHERE customer_id = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, customerId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        return new Customer(resultSet.getString("firstName"), resultSet.getString("lastName"));
+                        // Retrieve all necessary fields from the database
+                        String firstName = resultSet.getString("firstName");
+                        String lastName = resultSet.getString("lastName");
+                        String doB = resultSet.getString("doB");
+                        String telephone = resultSet.getString("telephone");
+                        String email = resultSet.getString("email");
+
+                        // Create and return the Customer object
+                        return new Customer(firstName, lastName, doB, telephone, email);
                     }
                 }
             }
@@ -69,6 +80,7 @@ public class DatabaseConnection {
         }
         return null;
     }
+
 
     public static void main(String[] args) {
         // Example of invoking the initialization method

@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -26,6 +28,39 @@ public class CustomerPageController {
     private Button purchasePageButton;
 
     @FXML
+    private Button CreateCustomerButton;
+
+    @FXML
+    private Label FirstNameLabel;
+
+    @FXML
+    private Label LastNameLabel;
+
+    @FXML
+    private Label DOBLabel;
+
+    @FXML
+    private Label TelephoneLabel;
+
+    @FXML
+    private Label EmailLabel;
+
+    @FXML
+    private TextField FirstNameTextField;
+
+    @FXML
+    private TextField LastNameTextField;
+
+    @FXML
+    private TextField DOBTextField;
+
+    @FXML
+    private TextField TelephoneTextField;
+
+    @FXML
+    private TextField EmailTextField;
+
+    @FXML
     private void handleExitButtonAction() {
         Platform.exit(); // Close the JavaFX application
     }
@@ -34,7 +69,7 @@ public class CustomerPageController {
     private void handleCustomerPageButtonAction() {
         try {
             // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-page.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-view-page.fxml"));
             Parent customerPage = loader.load();
 
             // Set the loaded FXML as the content of the pane
@@ -57,4 +92,39 @@ public class CustomerPageController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleCreateCustomerButtonAction() {
+        // Set the data from the text fields to the Customer object
+        Customer customer = new Customer(
+                FirstNameTextField.getText(),
+                LastNameTextField.getText(),
+                DOBTextField.getText(),
+                TelephoneTextField.getText(),
+                EmailTextField.getText()
+        );
+
+        // Save the customer to the database using DatabaseConnection
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.saveCustomer(customer);
+
+        // Optionally, you can clear the text fields after saving
+        clearTextFields();
+    }
+
+    private void saveCustomerToDatabase(Customer customer) {
+        // Add your logic to save the customer to the database (e.g., using JDBC)
+        // For demonstration purposes, let's print the customer details
+        System.out.println("Customer created: " + customer);
+    }
+
+    private void clearTextFields() {
+        // Clear the text fields after creating the customer
+        FirstNameTextField.clear();
+        LastNameTextField.clear();
+        DOBTextField.clear();
+        TelephoneTextField.clear();
+        EmailTextField.clear();
+    }
+
 }

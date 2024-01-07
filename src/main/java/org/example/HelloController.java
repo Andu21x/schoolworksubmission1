@@ -34,7 +34,7 @@ public class HelloController {
     private void handleCustomerPageButtonAction() {
         try {
             // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-page.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-view-page.fxml"));
             Parent customerPage = loader.load();
 
             // Set the loaded FXML as the content of the pane
