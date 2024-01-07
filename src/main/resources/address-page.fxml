@@ -6,23 +6,29 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.AddressPageController">
-   <children>
-      <Button fx:id="exitButton" layoutX="1245.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="Exit" />
-      <Button fx:id="customerPageButton" layoutX="20.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleCustomerPageButtonAction" text="Customer" />
-      <Button fx:id="purchasePageButton" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" onAction="#handlePurchasePageButtonAction" text="Purchase History" />
-      <Button fx:id="addressPageButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleAddressPageButtonAction" text="Address Page" />
-      <Button fx:id="customerAddressPageButton" layoutX="20.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleCustomerAddressPageButtonAction" text="Customer Address Page" />
-      <TextArea fx:id="addressInfoTextArea" layoutX="182.0" layoutY="253.0" prefHeight="348.0" prefWidth="754.0" />
-      <Button fx:id="showAddressListButton" layoutX="182.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleShowAddressListButtonAction" text="Show Address List" />
-      <Label fx:id="streetAddressLabel" layoutX="218.0" layoutY="42.0" text="Street Address" />
-      <TextField fx:id="streetAddressTextField" layoutX="182.0" layoutY="63.0" />
-      <Label fx:id="cityLabel" layoutX="447.0" layoutY="42.0" text="City" />
-      <TextField fx:id="cityTextField" layoutX="383.0" layoutY="61.0" />
-      <Label fx:id="stateLabel" layoutX="620.0" layoutY="42.0" text="State/County" />
-      <TextField fx:id="stateTextField" layoutX="581.0" layoutY="61.0" />
-      <Button fx:id="createAddressButton" layoutX="511.0" layoutY="125.0" mnemonicParsing="false" onAction="#handleCreateAddressButtonAction" text="Create Address" />
-      <Label fx:id="postcodeLabel" layoutX="833.0" layoutY="42.0" text="Postcode" />
-      <TextField fx:id="postcodeTextField" layoutX="783.0" layoutY="60.0" />
-   </children>
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.AddressPageController">
+   <Button fx:id="exitButton" layoutX="1245.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="Exit"/>
+   <Button fx:id="customerPageButton" layoutX="20.0" layoutY="50.0" mnemonicParsing="false"
+           onAction="#handleCustomerPageButtonAction" text="Customer"/>
+   <Button fx:id="purchasePageButton" layoutX="20.0" layoutY="100.0" mnemonicParsing="false"
+           onAction="#handlePurchasePageButtonAction" text="Purchase History"/>
+   <Button fx:id="addressPageButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false"
+           onAction="#handleAddressPageButtonAction" text="Address Page"/>
+   <Button fx:id="customerAddressPageButton" layoutX="20.0" layoutY="200.0" mnemonicParsing="false"
+           onAction="#handleCustomerAddressPageButtonAction" text="Customer Address Page"/>
+   <TextArea fx:id="addressInfoTextArea" layoutX="182.0" layoutY="253.0" prefHeight="348.0" prefWidth="754.0"/>
+   <Button fx:id="showAddressListButton" layoutX="182.0" layoutY="213.0" mnemonicParsing="false"
+           onAction="#handleShowAddressListButtonAction" text="Show Address List"/>
+   <Label fx:id="streetAddressLabel" layoutX="218.0" layoutY="42.0" text="Street Address"/>
+   <TextField fx:id="streetAddressTextField" layoutX="182.0" layoutY="63.0"/>
+   <Label fx:id="cityLabel" layoutX="447.0" layoutY="42.0" text="City"/>
+   <TextField fx:id="cityTextField" layoutX="383.0" layoutY="61.0"/>
+   <Label fx:id="stateLabel" layoutX="620.0" layoutY="42.0" text="State/County"/>
+   <TextField fx:id="stateTextField" layoutX="581.0" layoutY="61.0"/>
+   <Button fx:id="createAddressButton" layoutX="511.0" layoutY="125.0" mnemonicParsing="false"
+           onAction="#handleCreateAddressButtonAction" text="Create Address"/>
+   <Label fx:id="postcodeLabel" layoutX="833.0" layoutY="42.0" text="Postcode"/>
+   <TextField fx:id="postcodeTextField" layoutX="783.0" layoutY="60.0"/>
 </Pane>

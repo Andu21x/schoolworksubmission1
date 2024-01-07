@@ -3,12 +3,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.HelloController">
-   <children>
-      <Button fx:id="exitButton" layoutX="1245.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="Exit" />
-      <Button fx:id="customerPageButton" layoutX="20.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleCustomerPageButtonAction" text="Customer" />
-      <Button fx:id="purchasePageButton" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" onAction="#handlePurchasePageButtonAction" text="Purchase History" />
-      <Button fx:id="addressPageButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleAddressPageButtonAction" text="Address Page" />
-      <Button fx:id="customerAddressPageButton" layoutX="20.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleCustomerAddressPageButtonAction" text="Customer Address Page" />
-   </children>
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.HelloController">
+   <Button fx:id="exitButton" layoutX="1245.0" mnemonicParsing="false" onAction="#handleExitButtonAction" text="Exit"/>
+   <Button fx:id="customerPageButton" layoutX="20.0" layoutY="50.0" mnemonicParsing="false"
+           onAction="#handleCustomerPageButtonAction" text="Customer"/>
+   <Button fx:id="purchasePageButton" layoutX="20.0" layoutY="100.0" mnemonicParsing="false"
+           onAction="#handlePurchasePageButtonAction" text="Purchase History"/>
+   <Button fx:id="addressPageButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false"
+           onAction="#handleAddressPageButtonAction" text="Address Page"/>
+   <Button fx:id="customerAddressPageButton" layoutX="20.0" layoutY="200.0" mnemonicParsing="false"
+           onAction="#handleCustomerAddressPageButtonAction" text="Customer Address Page"/>
 </Pane>
