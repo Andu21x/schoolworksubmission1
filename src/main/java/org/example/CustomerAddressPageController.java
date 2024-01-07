@@ -1,7 +1,6 @@
 package org.example;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -57,6 +56,8 @@ public class CustomerAddressPageController {
     @FXML
     private Button customerAddressPageButton;
 
+
+
     @FXML
     private void handleExitButtonAction() {
         databaseConnection.closeConnection();
@@ -106,54 +107,26 @@ public class CustomerAddressPageController {
     }
 
     @FXML
-    private void handleCreateCustomerAddressButtonAction() {
-        try {
-            // Retrieve values from text fields
-            int customerAddressId = Integer.parseInt(addressIDTextField.getText());
-            int fkCustomerAddress = Integer.parseInt(customerIDTextField.getText());
-            int fkAddressAddress = Integer.parseInt(addressIDTextField.getText()); // Assuming the same text field for both IDs
-
-            // Create CustomerAddress object
-            CustomerAddress customerAddress = new CustomerAddress(customerAddressId, fkCustomerAddress, fkAddressAddress);
-
-            // Save the CustomerAddress to the database
-            databaseConnection.saveCustomerAddress(customerAddress);
-
-            // Display success message or update UI as needed
-            customerAddressInfoTextArea.setText("Customer Address created successfully!");
-        } catch (Exception e) {
-            customerAddressInfoTextArea.setText("Error creating Customer Address. Please check input values.");
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void handleShowCustomerAddressButtonAction() {
-        // Retrieve and display all customer addresses
-        List<CustomerAddress> customerAddressList = databaseConnection.getCustomerAddressList();
-        customerAddressInfoTextArea.clear();
-
-        for (CustomerAddress customerAddress : customerAddressList) {
-            showCustomerAddress(customerAddress);
-        }
-    }
-
-    private void showCustomerAddress(CustomerAddress customerAddress) {
-        customerAddressInfoTextArea.appendText("Customer Address Link ID: " + customerAddress.getCustomerAddressId() +
-                "\nCustomer ID: " + customerAddress.getFkCustomerAddress() +
-                "\nAddress ID: " + customerAddress.getFkAddressAddress() + "\n\n");
-    }
-
-    @FXML
     private void handleShowCustomerAddressListButtonAction() {
         // Retrieve and display all customer addresses
         List<CustomerAddress> customerAddressList = databaseConnection.getCustomerAddressList();
         customerAddressInfoTextArea.clear();
 
         for (CustomerAddress customerAddress : customerAddressList) {
-            showCustomerAddress(customerAddress);
+            // Retrieve additional information
+            String firstName = databaseConnection.getCustomerFirstName(customerAddress.getFkCustomerAddress());
+            String lastName = databaseConnection.getCustomerLastName(customerAddress.getFkCustomerAddress());
+            String postcode = databaseConnection.getAddressPostcode(customerAddress.getFkAddressAddress());
+
+            // Append the information to the text area
+            customerAddressInfoTextArea.appendText(customerAddress.toStringWithAdditionalInfo(firstName, lastName, postcode));
         }
     }
+
+    private void showCustomerAddress(CustomerAddress customerAddress) {
+        customerAddressInfoTextArea.appendText(customerAddress.toString());
+    }
+
     @FXML
     private void handleCreateLinkButtonAction() {
         try {
@@ -162,8 +135,13 @@ public class CustomerAddressPageController {
             int fkCustomerAddress = Integer.parseInt(customerIDTextField.getText());
             int fkAddressAddress = Integer.parseInt(addressIDTextField.getText()); // Assuming the same text field for both IDs
 
+            // Retrieve additional information from the database
+            String firstName = databaseConnection.getCustomerFirstName(fkCustomerAddress);
+            String lastName = databaseConnection.getCustomerLastName(fkCustomerAddress);
+            String postcode = databaseConnection.getAddressPostcode(fkAddressAddress);
+
             // Create CustomerAddress object
-            CustomerAddress customerAddress = new CustomerAddress(customerAddressId, fkCustomerAddress, fkAddressAddress);
+            CustomerAddress customerAddress = new CustomerAddress(customerAddressId, fkCustomerAddress, fkAddressAddress, firstName, lastName, postcode);
 
             // Save the CustomerAddress to the database
             databaseConnection.saveCustomerAddress(customerAddress);

@@ -220,23 +220,81 @@ public class DatabaseConnection {
         List<CustomerAddress> customerAddressList = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM Customer_Address";
+            String sql = "SELECT ca.Customer_Address, ca.customer_ID, ca.address_ID, c.firstName, c.lastName, a.postcode " +
+                    "FROM Customer_Address ca " +
+                    "JOIN Customer c ON ca.customer_ID = c.customer_id " +
+                    "JOIN Address a ON ca.address_ID = a.address_id";
+
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         int customerAddressId = resultSet.getInt("Customer_Address");
                         int fkCustomerAddress = resultSet.getInt("customer_ID");
                         int fkAddressAddress = resultSet.getInt("address_ID");
+                        String firstName = resultSet.getString("firstName");
+                        String lastName = resultSet.getString("lastName");
+                        String postcode = resultSet.getString("postcode");
 
-                        customerAddressList.add(new CustomerAddress(customerAddressId, fkCustomerAddress, fkAddressAddress));
+                        customerAddressList.add(new CustomerAddress(customerAddressId, fkCustomerAddress, fkAddressAddress, firstName, lastName, postcode));
                     }
                 }
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error retrieving all customer addresses", e);
+            logger.log(Level.SEVERE, "Error retrieving all customer addresses with details", e);
         }
 
         return customerAddressList;
+    }
+
+    public String getCustomerFirstName(int customerId) {
+        try {
+            String sql = "SELECT firstName FROM Customer WHERE customer_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, customerId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("firstName");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error retrieving customer first name", e);
+        }
+        return null;
+    }
+
+    public String getCustomerLastName(int customerId) {
+        try {
+            String sql = "SELECT lastName FROM Customer WHERE customer_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, customerId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("lastName");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error retrieving customer last name", e);
+        }
+        return null;
+    }
+
+    public String getAddressPostcode(int addressId) {
+        try {
+            String sql = "SELECT postcode FROM Address WHERE address_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, addressId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("postcode");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error retrieving address postcode", e);
+        }
+        return null;
     }
 
     public void closeConnection() {
