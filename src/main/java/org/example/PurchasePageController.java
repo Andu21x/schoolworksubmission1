@@ -1,3 +1,7 @@
+/**
+ * Controller class for the PurchasePage FXML, managing user interactions and navigation within the application.
+ * Handles actions such as creating purchase history records, displaying purchase history lists, and navigating to other pages.
+ */
 package org.example;
 
 import javafx.application.Platform;
@@ -18,113 +22,52 @@ import java.util.List;
 
 public class PurchasePageController {
 
+    // Database connection instance
     private final DatabaseConnection databaseConnection = new DatabaseConnection();
 
-    @FXML
-    private Button addressPageButton;
-    
-    @FXML
-    private Button customerAddressPageButton;
+    // FXML elements
+    @FXML private Button addressPageButton;
+    @FXML private Button customerAddressPageButton;
+    @FXML private TextField CustomerIDTextField;
+    @FXML private Button customerPageButton;
+    @FXML private Label CustomerIDLabel;
+    @FXML private Pane pane;
+    @FXML private TextArea purchaseInfoTextArea;
+    @FXML private Button exitButton;
+    @FXML private Button purchasePageButton;
+    @FXML private Button ShowPurchaseHistoryButton;
+    @FXML private TextField PurchaseDateTextField;
+    @FXML private TextField ProductNameTextField;
+    @FXML private TextField PurchaseAmountTextField;
+    @FXML private Label PurchaseDateLabel;
+    @FXML private Label ProductNameLabel;
+    @FXML private Label PurchaseAmountLabel;
+    @FXML private Label PurchaseFormatLabel;
+    @FXML private Button CreatePurchaseHistoryButton;
 
-    @FXML
-    private TextField CustomerIDTextField;
-
-    @FXML
-    private Button customerPageButton;
-
-    @FXML
-    private Label CustomerIDLabel;
-
-    @FXML
-    private Pane pane;
-
-    @FXML
-    private TextArea purchaseInfoTextArea;
-
-    @FXML
-    private Button exitButton;
-
-    @FXML
-    private Button purchasePageButton;
-
-    @FXML
-    private Button ShowPurchaseHistoryButton;
-
-    @FXML
-    private TextField PurchaseDateTextField;
-
-    @FXML
-    private TextField ProductNameTextField;
-
-    @FXML
-    private TextField PurchaseAmountTextField;
-
-    @FXML
-    private Label PurchaseDateLabel;
-
-    @FXML
-    private Label ProductNameLabel;
-
-    @FXML
-    private Label PurchaseAmountLabel;
-
-    @FXML
-    private Label PurchaseFormatLabel;
-
-    @FXML
-    private Button CreatePurchaseHistoryButton;
-
-
-    @FXML
-    private void handleExitButtonAction() {
+    // Handles the exit button action, closing the database connection and the JavaFX application
+    @FXML private void handleExitButtonAction() {
         databaseConnection.closeConnection();
-        Platform.exit(); // Close the JavaFX application
+        Platform.exit();
     }
 
-    @FXML
-    private void handleCustomerPageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-view-page.fxml"));
-            Parent customerPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the customer page
+    @FXML private void handleCustomerPageButtonAction() {
+        loadFXML("customer-view-page.fxml");
     }
 
-    @FXML
-    private void handlePurchasePageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("purchase-history-page.fxml"));
-            Parent purchaseHistoryPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(purchaseHistoryPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the purchase history page
+    @FXML private void handlePurchasePageButtonAction() {
+        loadFXML("purchase-history-page.fxml");
     }
 
-    @FXML
-    private void handleAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("address-page.fxml"));
-            Parent addressPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(addressPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the address page
+    @FXML private void handleAddressPageButtonAction() {
+        loadFXML("address-page.fxml");
     }
 
-    @FXML
-    private void handleCreatePurchaseHistoryButtonAction() {
+    // Handles creating a new purchase history record, saving it to the database, and updating the UI
+    @FXML private void handleCreatePurchaseHistoryButtonAction() {
         try {
             // Retrieve values from text fields
             String dateString = PurchaseDateTextField.getText();
@@ -154,18 +97,13 @@ public class PurchasePageController {
     // Helper method to parse date string to java.sql.Date
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date parsedDate = null;
-        try {
-            parsedDate = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        java.util.Date parsedDate = dateFormat.parse(dateString);
         return new Date(parsedDate.getTime());
     }
 
-    @FXML
-    private void handleShowPurchaseHistoryButtonAction() {
-        // Retrieve and display all purchase history records
+    // Handles displaying the list of purchase history records
+    @FXML private void handleShowPurchaseHistoryButtonAction() {
+        // Retrieve and display all purchase history records, and put it in a list
         List<PurchaseHistory> purchaseHistoryList = databaseConnection.getPurchaseHistory();
         purchaseInfoTextArea.clear();
 
@@ -174,6 +112,7 @@ public class PurchasePageController {
         }
     }
 
+    // Displays a single purchase history record in the text area
     private void showPurchaseHistory(PurchaseHistory purchaseHistory) {
         purchaseInfoTextArea.appendText("Date: " + purchaseHistory.getPurchaseDate() +
                 "\nProduct Name: " + purchaseHistory.getProductName() +
@@ -181,18 +120,19 @@ public class PurchasePageController {
                 "\nCustomer ID: " + purchaseHistory.getCustomerId() + "\n\n");
     }
 
-    @FXML
-    private void handleCustomerAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the customer address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-address-page.fxml"));
-            Parent customerAddressPage = loader.load();
+    // Handles navigation to the customer address page
+    @FXML private void handleCustomerAddressPageButtonAction() {
+        loadFXML("customer-address-page.fxml");
+    }
 
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerAddressPage);
+    // Helper method to load FXML file and set it as the content of the pane
+    private void loadFXML(String fxmlFileName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlFileName));
+            Parent page = loader.load();
+            pane.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

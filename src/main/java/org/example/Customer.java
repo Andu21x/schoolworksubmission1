@@ -1,16 +1,15 @@
 package org.example;
 
 public class Customer {
+
+    // Initialise private fields
     private String firstName;
     private String lastName;
     private String dob;
     private String telephone;
     private String email;
 
-    // Constructors
-    public Customer() {
-    }
-
+    //Customer Constructor, and its arguments
     public Customer(String firstName, String lastName, String dob, String telephone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +23,6 @@ public class Customer {
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -32,7 +30,6 @@ public class Customer {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -40,28 +37,25 @@ public class Customer {
     public String getDoB() {
         return dob;
     }
-
     public void setDoB(String doB) {
         dob = doB;
     }
 
     public String getTelephone() {
-        return telephone; // Change from Telephone to telephone
+        return telephone;
     }
-
     public void setTelephone(String telephone) {
-        this.telephone = telephone; // Change from Telephone to telephone
+        this.telephone = telephone;
     }
 
     public String getEmail() {
-        return email; // Change from Email to email
+        return email;
     }
-
     public void setEmail(String email) {
-        this.email = email; // Change from Email to email
+        this.email = email;
     }
 
-
+    // Returns a formatted string representation of the customer, with first name, last name, date of birth, telephone and email
     @Override
     public String toString() {
         return String.format("Name: %s %s\nDate of Birth: %s\nTelephone: %s\nEmail: %s\n",

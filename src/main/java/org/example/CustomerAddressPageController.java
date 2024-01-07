@@ -1,3 +1,7 @@
+/**
+ * Controller class for the CustomerAddressPage FXML, managing user interactions and navigation within the application.
+ * Handles actions such as creating customer-address links, displaying customer-address lists, and navigating to other pages.
+ */
 package org.example;
 
 import javafx.application.Platform;
@@ -15,99 +19,47 @@ import java.util.List;
 
 public class CustomerAddressPageController {
 
+    // Database connection instance
     private final DatabaseConnection databaseConnection = new DatabaseConnection();
 
-    @FXML
-    private Pane pane;
+    // FXML elements
+    @FXML private Pane pane;
+    @FXML private Button exitButton;
+    @FXML private Button customerPageButton;
+    @FXML private Button purchasePageButton;
+    @FXML private Button addressPageButton;
+    @FXML private TextArea customerAddressInfoTextArea;
+    @FXML private Button showCustomerAddressButton;
+    @FXML private Label addressIDLabel;
+    @FXML private TextField addressIDTextField;
+    @FXML private Label customerIDLabel;
+    @FXML private TextField customerIDTextField;
+    @FXML private Button createLinkButton;
+    @FXML private Button customerAddressPageButton;
 
-    @FXML
-    private Button exitButton;
-
-    @FXML
-    private Button customerPageButton;
-
-    @FXML
-    private Button purchasePageButton;
-
-    @FXML
-    private Button addressPageButton;
-
-    @FXML
-    private TextArea customerAddressInfoTextArea;
-
-    @FXML
-    private Button showCustomerAddressButton;
-
-    @FXML
-    private Label addressIDLabel;
-
-    @FXML
-    private TextField addressIDTextField;
-
-    @FXML
-    private Label customerIDLabel;
-
-    @FXML
-    private TextField customerIDTextField;
-
-    @FXML
-    private Button createLinkButton;
-
-    @FXML
-    private Button customerAddressPageButton;
-
-
-
-    @FXML
-    private void handleExitButtonAction() {
+    // Handles the exit button action, closing the database connection and the JavaFX application
+    @FXML private void handleExitButtonAction() {
         databaseConnection.closeConnection();
-        Platform.exit(); // Close the JavaFX application
+        Platform.exit();
     }
 
-    @FXML
-    private void handleCustomerPageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-view-page.fxml"));
-            Parent customerPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the customer page
+    @FXML private void handleCustomerPageButtonAction() {
+        loadFXML("customer-view-page.fxml");
     }
 
-    @FXML
-    private void handlePurchasePageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("purchase-history-page.fxml"));
-            Parent customerPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the purchase history page
+    @FXML private void handlePurchasePageButtonAction() {
+        loadFXML("purchase-history-page.fxml");
     }
 
-    @FXML
-    private void handleAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("address-page.fxml"));
-            Parent addressPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(addressPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the address page
+    @FXML private void handleAddressPageButtonAction() {
+        loadFXML("address-page.fxml");
     }
 
-    @FXML
-    private void handleShowCustomerAddressListButtonAction() {
+    // Handles displaying the list of customer addresses
+    @FXML private void handleShowCustomerAddressListButtonAction() {
         // Retrieve and display all customer addresses
         List<CustomerAddress> customerAddressList = databaseConnection.getCustomerAddressList();
         customerAddressInfoTextArea.clear();
@@ -123,17 +75,18 @@ public class CustomerAddressPageController {
         }
     }
 
+    // Displays a single customer address in the text area
     private void showCustomerAddress(CustomerAddress customerAddress) {
         customerAddressInfoTextArea.appendText(customerAddress.toString());
     }
 
-    @FXML
-    private void handleCreateLinkButtonAction() {
+    // Handles creating a new customer-address link, saving it to the database, and updating the UI
+    @FXML private void handleCreateLinkButtonAction() {
         try {
             // Retrieve values from text fields
             int customerAddressId = Integer.parseInt(addressIDTextField.getText());
             int fkCustomerAddress = Integer.parseInt(customerIDTextField.getText());
-            int fkAddressAddress = Integer.parseInt(addressIDTextField.getText()); // Assuming the same text field for both IDs
+            int fkAddressAddress = Integer.parseInt(addressIDTextField.getText());
 
             // Retrieve additional information from the database
             String firstName = databaseConnection.getCustomerFirstName(fkCustomerAddress);
@@ -149,7 +102,7 @@ public class CustomerAddressPageController {
             // Display success message or update UI as needed
             customerAddressInfoTextArea.setText("Customer Address created successfully!");
 
-            // Optionally, you can clear the text fields after saving
+            // Clear the text fields after saving
             clearTextFields();
         } catch (Exception e) {
             customerAddressInfoTextArea.setText("Error creating Customer Address. Please check input values.");
@@ -157,25 +110,25 @@ public class CustomerAddressPageController {
         }
     }
 
-    @FXML
-    private void clearTextFields() {
-        // Clear the text fields after creating the customer address
+    // Clears the text fields after creating the customer address
+    @FXML private void clearTextFields() {
         addressIDTextField.clear();
         customerIDTextField.clear();
     }
 
-    @FXML
-    private void handleCustomerAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the customer address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-address-page.fxml"));
-            Parent customerAddressPage = loader.load();
+    // Handles navigation to the customer address page
+    @FXML private void handleCustomerAddressPageButtonAction() {
+        loadFXML("customer-address-page.fxml");
+    }
 
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerAddressPage);
+    // Helper method to load FXML file and set it as the content of the pane
+    private void loadFXML(String fxmlFileName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlFileName));
+            Parent page = loader.load();
+            pane.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

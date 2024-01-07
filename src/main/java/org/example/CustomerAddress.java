@@ -1,6 +1,8 @@
 package org.example;
 
 public class CustomerAddress {
+
+    // Initialise private fields
     private int customerAddressId;
     private int fkCustomerAddress;
     private int fkAddressAddress;
@@ -9,7 +11,7 @@ public class CustomerAddress {
     private String lastName;
     private String postcode;
 
-    // Constructors
+    // Customer Address Constructor, and its arguments
     public CustomerAddress(int customerAddressId, int fkCustomerAddress, int fkAddressAddress, String firstName, String lastName, String postcode) {
         this.customerAddressId = customerAddressId;
         this.fkCustomerAddress = fkCustomerAddress;
@@ -23,7 +25,6 @@ public class CustomerAddress {
     public int getCustomerAddressId() {
         return customerAddressId;
     }
-
     public void setCustomerAddressId(int customerAddressId) {
         this.customerAddressId = customerAddressId;
     }
@@ -31,7 +32,6 @@ public class CustomerAddress {
     public int getFkCustomerAddress() {
         return fkCustomerAddress;
     }
-
     public void setFkCustomerAddress(int fkCustomerAddress) {
         this.fkCustomerAddress = fkCustomerAddress;
     }
@@ -39,7 +39,6 @@ public class CustomerAddress {
     public int getFkAddressAddress() {
         return fkAddressAddress;
     }
-
     public void setFkAddressAddress(int fkAddressAddress) {
         this.fkAddressAddress = fkAddressAddress;
     }
@@ -47,7 +46,6 @@ public class CustomerAddress {
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -55,7 +53,6 @@ public class CustomerAddress {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -63,18 +60,18 @@ public class CustomerAddress {
     public String getPostcode() {
         return postcode;
     }
-
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
 
-    // toString methods
+    // Returns a formatted string representation of the customer address with its respective ID's
     @Override
     public String toString() {
         return String.format("Customer Address Link ID: %d\nCustomer ID: %d\nAddress ID: %d\n",
                 customerAddressId, fkCustomerAddress, fkAddressAddress);
     }
 
+    // Returns a formatted string representation of the additional information of the ID's.
     public String toStringWithAdditionalInfo(String firstName, String lastName, String postcode) {
         return String.format("%sCustomer Name: %s %s\nPostcode: %s\n\n",
                 toString(), firstName, lastName, postcode);

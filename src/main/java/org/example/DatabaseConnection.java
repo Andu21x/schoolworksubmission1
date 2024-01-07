@@ -1,3 +1,7 @@
+/**
+ * DatabaseConnection class responsible for establishing and managing the connection to the MySQL database.
+ * It includes methods for saving and retrieving customer, purchase history, address, and customer address information.
+ */
 package org.example;
 
 import java.sql.*;
@@ -8,13 +12,18 @@ import java.util.logging.Logger;
 
 public class DatabaseConnection {
 
+    // Logger for logging errors and information
     private static final Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
+
+    // Database connection details, including initialising strings, to which we assign the needed credentials
     private static Connection connection;
     private static final String DB_URL = "jdbc:mysql://google/quickstart_db?cloudSqlInstance=schoolwork-101010:europe-west2:quickstart-instance";
     private static final String USER = "quickstart-user";
     private static final String PASSWORD = "user123$";
 
-
+    /**
+     * Constructor to initialize the DatabaseConnection and establish a connection to the MySQL database.
+     */
     public DatabaseConnection() {
         try {
             // Load the MySQL JDBC driver
@@ -26,7 +35,9 @@ public class DatabaseConnection {
                     "&user=quickstart-user" +
                     "&password=user123$";
 
+            logger.log(Level.INFO, "Connecting to database: " + jdbcUrl);
 
+            // Create a connection to the database
             connection = DriverManager.getConnection(jdbcUrl);
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -34,15 +45,24 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Main method for testing the initialization of the DatabaseConnection.
+     */
     public static void main(String[] args) {
-        // Example of invoking the initialization method
+        // Invoking the initialization method
         new DatabaseConnection();
     }
 
+    /**
+     * Returns the established database connection.
+     */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Saves a customer object to the database.
+     */
     public void saveCustomer(Customer customer) {
         try {
             String sql = "INSERT INTO Customer (firstName, lastName, doB, telephone, email) VALUES (?, ?, ?, ?, ?)";
@@ -59,34 +79,12 @@ public class DatabaseConnection {
         }
     }
 
-    public Customer getCustomerById(int customerId) {
-        try {
-            String sql = "SELECT * FROM Customer WHERE customer_id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, customerId);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        // Retrieve all necessary fields from the database
-                        String firstName = resultSet.getString("firstName");
-                        String lastName = resultSet.getString("lastName");
-                        String doB = resultSet.getString("doB");
-                        String telephone = resultSet.getString("telephone");
-                        String email = resultSet.getString("email");
-
-                        // Create and return the Customer object
-                        return new Customer(firstName, lastName, doB, telephone, email);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error retrieving customer by ID", e);
-        }
-        return null;
-    }
-
+    /**
+     * Implementation of retrieving all customers from the database
+     */
     public List<Customer> getAllCustomers() {
+        // Create a list to store the customers
         List<Customer> customers = new ArrayList<>();
-
         try {
             String sql = "SELECT * FROM Customer";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -105,10 +103,12 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error retrieving all customers", e);
         }
-
         return customers;
     }
 
+    /**
+     * Saves a purchase history object to the database.
+     */
     public void savePurchaseHistory(PurchaseHistory purchaseHistory, int customerId) {
         try {
             String sql = "INSERT INTO PurchaseHistory (purchaseDate, productName, purchaseAmount, customer_ID) VALUES (?, ?, ?, ?)";
@@ -124,10 +124,12 @@ public class DatabaseConnection {
         }
     }
 
-
+    /**
+     * Retrieves a list of all purchase history records from the database.
+     */
     public List<PurchaseHistory> getPurchaseHistory() {
+        // Create a list to store the purchase history records
         List<PurchaseHistory> purchaseHistoryList = new ArrayList<>();
-
         try {
             String sql = "SELECT purchaseDate, productName, purchaseAmount, customer_ID FROM PurchaseHistory";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -145,13 +147,15 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error retrieving all purchase history", e);
         }
-
         return purchaseHistoryList;
     }
 
+    /**
+     * Saves an address object to the database.
+     */
     public void saveAddress(Address address) {
         try {
-            // Assuming you have a table named "Address" with appropriate columns
+            // Implementation of saving an address to the database
             String query = "INSERT INTO Address (street_address, city, state, postcode) VALUES (?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, address.getStreetAddress());
@@ -162,14 +166,16 @@ public class DatabaseConnection {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception appropriately
         }
     }
 
+    /**
+     * Retrieves a list of all addresses from the database.
+     */
     public List<Address> getAddressList() {
         List<Address> addressList = new ArrayList<>();
         try {
-            // Assuming you have a table named "Address" with appropriate columns
+            // Implementation of retrieving all addresses from the database
             String query = "SELECT * FROM Address";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -186,13 +192,16 @@ public class DatabaseConnection {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception appropriately
         }
         return addressList;
     }
+
+    /**
+     * Saves a customer address object to the database.
+     */
     public void saveCustomerAddress(CustomerAddress customerAddress) {
         try {
-            // Assuming 'Customer_Address' is auto-incremented, you don't need to insert a value for it.
+            // Implementation of saving a customer address to the database
             String sql = "INSERT INTO Customer_Address (customer_ID, address_ID) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setInt(1, customerAddress.getFkCustomerAddress());
@@ -214,9 +223,11 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Retrieves a list of all customer addresses with additional details from the database.
+     */
     public List<CustomerAddress> getCustomerAddressList() {
         List<CustomerAddress> customerAddressList = new ArrayList<>();
-
         try {
             String sql = "SELECT ca.Customer_Address, ca.customer_ID, ca.address_ID, c.firstName, c.lastName, a.postcode " +
                     "FROM Customer_Address ca " +
@@ -240,10 +251,12 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error retrieving all customer addresses with details", e);
         }
-
         return customerAddressList;
     }
 
+    /**
+     * Retrieves the first name of a customer by their ID from the database.
+     */
     public String getCustomerFirstName(int customerId) {
         try {
             String sql = "SELECT firstName FROM Customer WHERE customer_id = ?";
@@ -261,6 +274,9 @@ public class DatabaseConnection {
         return null;
     }
 
+    /**
+     * Retrieves the last name of a customer by their ID from the database.
+     */
     public String getCustomerLastName(int customerId) {
         try {
             String sql = "SELECT lastName FROM Customer WHERE customer_id = ?";
@@ -278,6 +294,9 @@ public class DatabaseConnection {
         return null;
     }
 
+    /**
+     * Retrieves the postcode of an address by its ID from the database.
+     */
     public String getAddressPostcode(int addressId) {
         try {
             String sql = "SELECT postcode FROM Address WHERE address_id = ?";
@@ -295,6 +314,9 @@ public class DatabaseConnection {
         return null;
     }
 
+    /**
+     * Closes the database connection.
+     */
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {

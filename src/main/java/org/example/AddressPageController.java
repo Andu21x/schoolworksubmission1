@@ -1,3 +1,7 @@
+/**
+ * Controller class for the AddressPage FXML, managing user interactions and navigation within the application.
+ * Handles actions such as creating addresses, displaying address lists, and navigating to other pages.
+ */
 package org.example;
 
 import javafx.application.Platform;
@@ -18,109 +22,51 @@ import java.util.List;
 
 public class AddressPageController {
 
+    // Database connection instance
     private final DatabaseConnection databaseConnection = new DatabaseConnection();
 
-    @FXML
-    private Button customerAddressPageButton;
+    // FXML elements
+    @FXML private Button customerAddressPageButton;
+    @FXML private Pane pane;
+    @FXML private TextArea addressInfoTextArea;
+    @FXML private Button exitButton;
+    @FXML private Button addressPageButton;
+    @FXML private Button purchasePageButton;
+    @FXML private Button showAddressListButton;
+    @FXML private TextField streetAddressTextField;
+    @FXML private TextField cityTextField;
+    @FXML private TextField stateTextField;
+    @FXML private TextField postcodeTextField;
+    @FXML private Label streetAddressLabel;
+    @FXML private Label cityLabel;
+    @FXML private Label stateLabel;
+    @FXML private Label postcodeLabel;
+    @FXML private Button createAddressButton;
+    @FXML private Button customerPageButton;
 
-    @FXML
-    private Pane pane;
-
-    @FXML
-    private TextArea addressInfoTextArea;
-
-    @FXML
-    private Button exitButton;
-
-    @FXML
-    private Button addressPageButton;
-
-    @FXML
-    private Button purchasePageButton;
-
-    @FXML
-    private Button showAddressListButton;
-
-    @FXML
-    private TextField streetAddressTextField;
-
-    @FXML
-    private TextField cityTextField;
-
-    @FXML
-    private TextField stateTextField;
-
-    @FXML
-    private TextField postcodeTextField;
-
-    @FXML
-    private Label streetAddressLabel;
-
-    @FXML
-    private Label cityLabel;
-
-    @FXML
-    private Label stateLabel;
-
-    @FXML
-    private Label postcodeLabel;
-
-    @FXML
-    private Button createAddressButton;
-
-    @FXML
-    private Button customerPageButton;
-
-    @FXML
-    private void handleExitButtonAction() {
+    // Handles the exit button action, closing the database connection and the JavaFX application
+    @FXML private void handleExitButtonAction() {
         databaseConnection.closeConnection();
-        Platform.exit(); // Close the JavaFX application
+        Platform.exit();
     }
 
-    @FXML
-    private void handleCustomerPageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-view-page.fxml"));
-            Parent customerPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the customer page
+    @FXML private void handleCustomerPageButtonAction() {
+        loadFXML("customer-view-page.fxml");
     }
 
-    @FXML
-    private void handlePurchasePageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("purchase-history-page.fxml"));
-            Parent purchaseHistoryPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(purchaseHistoryPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the purchase history page
+    @FXML private void handlePurchasePageButtonAction() {
+        loadFXML("purchase-history-page.fxml");
     }
 
-    @FXML
-    private void handleAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("address-page.fxml"));
-            Parent addressPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(addressPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the address page
+    @FXML private void handleAddressPageButtonAction() {
+        loadFXML("address-page.fxml");
     }
 
-    @FXML
-    private void handleCreateAddressButtonAction() {
+    // Handles creating a new address, saving it to the database, and updating the UI
+    @FXML private void handleCreateAddressButtonAction() {
         try {
             // Retrieve values from text fields
             String streetAddress = streetAddressTextField.getText();
@@ -142,10 +88,12 @@ public class AddressPageController {
         }
     }
 
-    @FXML
-    private void handleShowAddressListButtonAction() {
+    // Handles displaying the list of addresses
+    @FXML private void handleShowAddressListButtonAction() {
         // Retrieve and display all addresses
         List<Address> addressList = databaseConnection.getAddressList();
+
+        // Clear the TextArea before displaying
         addressInfoTextArea.clear();
 
         for (Address address : addressList) {
@@ -153,6 +101,7 @@ public class AddressPageController {
         }
     }
 
+    // Displays address in the text area
     private void showAddress(Address address) {
         addressInfoTextArea.appendText("Address ID: " + getAddressId(address) +
                 "\nStreet Address: " + address.getStreetAddress() +
@@ -161,6 +110,7 @@ public class AddressPageController {
                 "\nPostcode: " + address.getPostcode() + "\n\n");
     }
 
+    // Retrieves the ID of an address from the database
     private int getAddressId(Address address) {
         String sql = "SELECT address_ID FROM Address WHERE street_address = ? AND city = ? AND state = ? AND postcode = ?";
         try (PreparedStatement statement = databaseConnection.getConnection().prepareStatement(sql)) {
@@ -181,18 +131,19 @@ public class AddressPageController {
         return -1; // Return a default value or handle the case when the address_ID is not found
     }
 
-    @FXML
-    private void handleCustomerAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the customer address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-address-page.fxml"));
-            Parent customerAddressPage = loader.load();
+    // Handles navigation to the customer address page
+    @FXML private void handleCustomerAddressPageButtonAction() {
+        loadFXML("customer-address-page.fxml");
+    }
 
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerAddressPage);
+    // Helper method to load FXML file and set it as the content of the pane
+    private void loadFXML(String fxmlFileName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlFileName));
+            Parent page = loader.load();
+            pane.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

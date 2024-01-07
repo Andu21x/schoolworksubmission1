@@ -1,3 +1,7 @@
+/**
+ * Controller class for the Hello FXML, managing user interactions and navigation within the application.
+ * Handles actions such as navigating to customer, purchase history, address, and customer address pages.
+ */
 package org.example;
 
 import javafx.application.Platform;
@@ -11,80 +15,45 @@ import java.io.IOException;
 
 public class HelloController {
 
-    @FXML
-    private Button addressPageButton;
+    // FXML elements
+    @FXML private Button addressPageButton;
+    @FXML private Button customerAddressPageButton;
+    @FXML private Pane pane;
+    @FXML private Button exitButton;
+    @FXML private Button customerPageButton;
+    @FXML private Button purchasePageButton;
 
-    @FXML
-    private Button customerAddressPageButton;
-
-    @FXML
-    private Pane pane;
-
-    @FXML
-    private Button exitButton;
-
-    @FXML
-    private Button customerPageButton;
-
-    @FXML
-    private Button purchasePageButton;
-
-    @FXML
-    private void handleExitButtonAction() {
-        Platform.exit(); // Close the JavaFX application
+    // Handles the exit button action, closing the JavaFX application
+    @FXML private void handleExitButtonAction() {
+        Platform.exit();
     }
 
-    @FXML
-    private void handleCustomerPageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-view-page.fxml"));
-            Parent customerPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the customer page
+    @FXML private void handleCustomerPageButtonAction() {
+        loadFXML("customer-view-page.fxml");
     }
 
-    @FXML
-    private void handlePurchasePageButtonAction() {
-        try {
-            // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("purchase-history-page.fxml"));
-            Parent customerPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the purchase history page
+    @FXML private void handlePurchasePageButtonAction() {
+        loadFXML("purchase-history-page.fxml");
     }
 
-    @FXML
-    private void handleAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("address-page.fxml"));
-            Parent addressPage = loader.load();
-
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(addressPage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Handles navigation to the address page
+    @FXML private void handleAddressPageButtonAction() {
+        loadFXML("address-page.fxml");
     }
 
-    @FXML
-    private void handleCustomerAddressPageButtonAction() {
-        try {
-            // Load the new FXML file for the customer address page
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("customer-address-page.fxml"));
-            Parent customerAddressPage = loader.load();
+    // Handles navigation to the customer address page
+    @FXML private void handleCustomerAddressPageButtonAction() {
+        loadFXML("customer-address-page.fxml");
+    }
 
-            // Set the loaded FXML as the content of the pane
-            pane.getChildren().setAll(customerAddressPage);
+    // Helper method to load FXML file and set it as the content of the pane
+    private void loadFXML(String fxmlFileName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlFileName));
+            Parent page = loader.load();
+            pane.getChildren().setAll(page);
         } catch (IOException e) {
             e.printStackTrace();
         }
